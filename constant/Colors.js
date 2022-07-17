@@ -1,0 +1,10 @@
+export default {
+    PRIMARY:'#2196f3',
+    SECONDARY:'#1976d2',
+    DESIGN:'#101E41',
+    LG_BLUE:'#03a9f4',
+    BORDER_COLOR:'#D3D3D3',
+    BORDER_BACK_COLOR:'#FBFBFB',
+    TEXT_COLOR:'#707070',
+    INSTAGRAM_COLOR:'',
+}
