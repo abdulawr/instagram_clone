@@ -21,7 +21,9 @@ const Home_Screen = (props) => {
 
      const {navigation} = props;
      let state = useSelector(state => state.user.user);
-    // state = JSON.parse(state);
+     if(!state instanceof Object){
+        state = JSON.parse(state);
+     }
    
    // let email = user.email,mobile=user.mobile,name=user.name,userID=user.userID;
     // console.log("Email: "+email+"\n"+"Name: "+name+"\n"+"Mobile: "+mobile+"\n"+"Email: "+userID+"\n"+userID)
@@ -72,6 +74,8 @@ const Home_Screen = (props) => {
                       ),}} component={Favorite} />
                
                 <Tab.Screen name="Tab_Profile" options={{
+                      headerShown:true,
+                      headerShadowVisible: false,
                       tabBarIcon: ({ color }) => (
                         <Circle_imag width={28} url={(state.image != null && state.image != 'null') ? {uri:state.image} : {uri:'https://play-lh.googleusercontent.com/I-Yd5tJnxw7Ks8FUhUiFr8I4kohd9phv5sRFHG_-nSX9AAD6Rcy570NBZVFJBKpepmc'}} />
                       ),}} component={Profile} />
