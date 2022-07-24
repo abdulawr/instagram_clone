@@ -6,44 +6,91 @@ import {
     Animated,
     FlatList,
     Modal,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Pressable
  } from "react-native";
  import { useRef, useState,useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
 import Circle_Image from "../../component/Common/Circle_Image";
 import Outline_Button from '../../component/button/Outline_Button';
 import PostRow from "../../component/Posts/PostRow";
-import { SafeAreaView } from 'react-native-safe-area-context';
 import Colors from "../../constant/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import {logOut} from '../../config/Functions';
-import { collection, getDocs,where,query } from "firebase/firestore";
+import { collection, getDocs,where,query,deleteDoc,doc,setDoc } from "firebase/firestore";
 import { fireStore } from "../../config/firebase";
 import PeopleRow from "../../component/Posts/PeopleRow";
-import Input from '../../component/EditField/Input';
 import { TextInput } from "react-native";
+import { deleteUser } from "../../redux/Slices/User";
+import { deletePost } from "../../redux/Slices/Posts";
+import {deleteFollowing} from '../../redux/Slices/Following';
+import { addFollowing,deleteDOC } from '../../redux/Slices/Following';
+import BlueOutline_Button from "../../component/button/BlueOutline_Button";
+import Loading from "../../component/Loading/Loading";
 
 
 const Profile = (props) => {
 
-    const user = useSelector(state => state.user.user);
+  const state = useSelector(state => state);
+  const user = state.user.user;
+  const follow = state.follow.follow;
 
     if(!user instanceof Object){
         user = JSON.parse(user);
      }
 
+     const dispatch = useDispatch();
+
     const POSTS = useSelector(state => state.post.post)
     const [peoples,setPeople] = useState([]);
     const [model,setModal] = useState(false);
+    const [loading,setLoading] = useState(false);
     const {navigation} = props;
 
-    console.log(user)
+    const[name,setName] = useState(user.name);
+    const[mobile,setMobile] = useState(user.mobile);
+    const[email,setEmail] = useState(user.email);
 
+    const SaveChanges = () => {
+     console.log('name',name)
+    }
 
     const onlogOut = () => {
        logOut();
+       dispatch(deleteUser());
+       dispatch(deletePost());
+       dispatch(deleteFollowing());
        navigation.replace("Landing");
     }
+
+    const following = (followbyID) => {
+      console.log('here')
+      setLoading(true)
+      setDoc(doc(collection(doc(collection(fireStore,'following'),user.userID),'userFollower'),followbyID),{}).then((resp)=>{
+         setLoading(false);
+         alert("Action performed successfully");
+         if(follow.includes(followbyID) == false){
+             dispatch(addFollowing(followbyID))
+          }
+      }).catch((err) => {
+          setLoading(false);
+          alert('Something went wrong try again')
+      })
+  }
+
+  const unfollowing = (followbyID) => {
+      setLoading(true)
+      deleteDoc(doc(collection(doc(collection(fireStore,'following'),user.userID),'userFollower'),followbyID),{}).then((resp)=>{
+         setLoading(false);
+         alert("Action performed successfully");
+         dispatch(deleteDOC(followbyID));
+
+      }).catch((err) => {
+          setLoading(false);
+          console.log('Error => ',err)
+          alert('Something went wrong try again')
+      })
+  }
 
     useEffect(()=>{
         (
@@ -63,31 +110,33 @@ const Profile = (props) => {
                         }
                     );
                   }
-         
-                  if(resp.length > 0){
-                    setPeople(resp);
-                  }
                 
-                });               
+                });   
+                
+                if(resp.length > 0){
+                  setPeople(resp);
+                }
             }
         )();
+
+
        
     },[])
 
     let headerSection = (<View style={styles.container}>               
     <View style={{flexDirection:'row',marginTop:60,justifyContent:'space-evenly',alignItems:'center'}}>
-
+          <Loading visible={loading} />
           <Modal
            visible={model}
            transparent={true}
           >
-                 <KeyboardAvoidingView style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'#00000099'}}>
+                 <View style={{flex:1,justifyContent:'center',alignItems:'center',backgroundColor:'#00000099'}}>
                      <View style={styles.popupview}>
                       
                            
                            <View style={{flexDirection:'row',justifyContent:'space-between'}}>
                               <Ionicons onPress={()=>setModal(false)} name="close" color={Colors.DESIGN} style={{alignSelf:'flex-start'}} size={35} />
-                              <Ionicons name="checkmark-sharp" color={Colors.DESIGN} style={{alignSelf:'flex-end'}} size={35} />
+                              <Ionicons onPress={SaveChanges} name="checkmark-sharp" color={Colors.DESIGN} style={{alignSelf:'flex-end'}} size={35} />
                            </View>
 
                            <View style={styles.topImage}>
@@ -99,24 +148,24 @@ const Profile = (props) => {
                              
                              <View>
                                 <Text style={{fontFamily:'SAN_REG',fontSize:12}}>Name</Text>
-                                <TextInput value={user.mobile} style={styles.input} />
+                                <TextInput onChangeText={setName} value={name} style={styles.input} />
                              </View>
 
                              <View>
                                 <Text style={{fontFamily:'SAN_REG',fontSize:12,marginTop:12}}>Mobile</Text>
-                                <TextInput value={user.mobile} style={styles.input} />
+                                <TextInput onChangeText={setMobile} value={mobile} style={styles.input} />
                              </View>
 
                              <View>
                                 <Text style={{fontFamily:'SAN_REG',fontSize:12,marginTop:12}}>Email</Text>
-                                <TextInput value={user.email} style={styles.input} />
+                                <TextInput onChangeText={setEmail} value={email} style={styles.input} />
                              </View>
 
                             
                           </View>
                          
                      </View>
-                 </KeyboardAvoidingView>
+                 </View>
           </Modal>
 
           <View>
@@ -149,7 +198,9 @@ const Profile = (props) => {
 
      <View style={styles.disContainer}>
         <Text style={{fontFamily:'SAN_BOLD'}}>Discover people</Text>
+        <Pressable onPress={()=>{navigation.navigate("UserList")}}>
         <Text style={{fontFamily:'SAN_BOLD',color:Colors.SECONDARY}}>See all</Text>
+        </Pressable>
      </View>
 
 
@@ -159,7 +210,11 @@ const Profile = (props) => {
       showsHorizontalScrollIndicator={false}
       style={{width:'100%'}}
       renderItem={
-        ({item}) => { return <PeopleRow item={item} />;}}
+        ({item}) => {
+          let followStatus = follow.includes(item.id);
+          return (followStatus == false) ? <PeopleRow followStatus={followStatus} onClick={()=> following(item.id)} item={item} />
+          : <PeopleRow followStatus={followStatus} onClick={()=> unfollowing(item.id)} item={item} />
+        }}
      />
 
     </View> );

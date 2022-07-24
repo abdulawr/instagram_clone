@@ -10,6 +10,9 @@ import Startup from "../screen/Startup/Startup";
 import { useSelector } from "react-redux";
 import NewPost from "../screen/bottomNavigation/NewPost";
 import SavePost from "../screen/SavePost";
+import UserProfile from "../screen/UserProfile";
+import UserList from "../screen/UserList";
+
 
 
 const Navigation = (props) => {
@@ -38,7 +41,10 @@ const Navigation = (props) => {
          <NavigationContainer>
          <Stack.Navigator initialRouteName="Startup">
 
+            <Stack.Screen options={{headerShown:true,title:"Discover people",headerTitleStyle: { fontFamily:'SAN_BOLD' },
+             headerShadowVisible: false,}} name="UserList" component={UserList} />
             <Stack.Screen options={{headerShown:false}} name="Startup" component={Startup} />
+            <Stack.Screen options={{headerShown:false}} name="UserProfile" component={UserProfile} />
             <Stack.Screen options={{headerShown:false}} name="Landing" component={Landing} />
             <Stack.Screen options={{headerShown:false}} name="DefaultPage" component={index} />
             <Stack.Screen options={{headerShown:false}} name="HomeScreen" component={Home_Screen} />

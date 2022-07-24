@@ -9,7 +9,7 @@ import {
 const BlueOutline_Button = (props) => {
     return ( 
             <TouchableOpacity style={StyleSheet.compose(styles.button,props.style)} onPress={props.onClick}>
-                  <Text style={{color:'white', fontFamily:'SAN_MED'}}>{props.title}</Text>
+                  <Text style={{color:'#707070', fontFamily:'SAN_MED'}}>{props.title}</Text>
             </TouchableOpacity>
      );
 }

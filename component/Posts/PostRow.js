@@ -10,7 +10,7 @@ const PostRow = (props) => {
     const {item} = props;
 
     return ( 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.onClick}>
             <Image style={styles.imageContainer} source={{uri:item.image}} />
         </TouchableOpacity>
      );

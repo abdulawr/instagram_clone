@@ -11,6 +11,7 @@ import React from 'react';
 import {useDispatch } from "react-redux";
 import {addUser} from '../../redux/Slices/User';
 import postThunks from "../../redux/Action_Thunk/postThunks";
+import FollowingThunks from "../../redux/Action_Thunk/FollowingThunks";
 
 const Startup = (props) => {
 
@@ -29,6 +30,7 @@ const Startup = (props) => {
 
         const data = JSON.parse(result);
         dispatch(postThunks(data.userID));
+        dispatch(FollowingThunks(data.userID));
         dispatch(addUser(data));
        navigation.replace("HomeScreen"); return;
     }
