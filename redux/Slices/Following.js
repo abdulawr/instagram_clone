@@ -33,5 +33,5 @@ const Following = createSlice({
   }
 });
 
-export const {addFollowing,deletePost,deleteDOC} = Following.actions;
+export const {addFollowing,deletePost,deleteDOC,deleteFollowing} = Following.actions;
 export default Following.reducer;

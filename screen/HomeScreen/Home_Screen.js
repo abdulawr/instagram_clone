@@ -45,6 +45,7 @@ const Home_Screen = (props) => {
               inactiveColor="#707070">
 
                 <Tab.Screen name="Tab_Home" options={{
+                      headerShown:true,
                       tabBarIcon: (ob) => (
                       <MaterialCommunityIcons name={(ob.focused == true) ? 'home-variant' : 'home-variant-outline'} color={ob.color} size={26} />
                       ),}}  component={Home} />
@@ -69,6 +70,7 @@ const Home_Screen = (props) => {
                       component={NewPost} />
 
                 <Tab.Screen name="Tab_Favorite" options={{
+                     headerShown:true,
                       tabBarIcon: (ob) => (
                       <MaterialCommunityIcons name={(ob.focused == true) ? 'cards-heart' : 'cards-heart-outline'} color={ob.color} size={26} />
                       ),}} component={Favorite} />

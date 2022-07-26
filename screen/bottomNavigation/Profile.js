@@ -39,6 +39,11 @@ const Profile = (props) => {
         user = JSON.parse(user);
      }
 
+    const onProfilePress = (uid) => {
+      console.log("hereerere")
+     navigation.navigate("UserProfile",{profileID:uid});
+    }
+
      const dispatch = useDispatch();
 
     const POSTS = useSelector(state => state.post.post)
@@ -212,8 +217,8 @@ const Profile = (props) => {
       renderItem={
         ({item}) => {
           let followStatus = follow.includes(item.id);
-          return (followStatus == false) ? <PeopleRow followStatus={followStatus} onClick={()=> following(item.id)} item={item} />
-          : <PeopleRow followStatus={followStatus} onClick={()=> unfollowing(item.id)} item={item} />
+          return (followStatus == false) ? <PeopleRow onProfilePress={() => onProfilePress(item.id)} followStatus={followStatus} onClick={()=> following(item.id)} item={item} />
+          : <PeopleRow onProfilePress={() => onProfilePress(item.id)} followStatus={followStatus} onClick={()=> unfollowing(item.id)} item={item} />
         }}
      />
 

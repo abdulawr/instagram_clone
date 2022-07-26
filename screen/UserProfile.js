@@ -29,6 +29,9 @@ const UserProfile = (props) => {
     const [loading,setLoading] = useState(false);
     const [post,setPost] = useState([]);
 
+    const sendMessage = () => {
+      navigation.navigate("MessageView",{profileID:profileID})
+    }
 
 
     useEffect(()=>{
@@ -92,7 +95,7 @@ const UserProfile = (props) => {
 
    <View style={{flexDirection:'row',justifyContent:'space-evenly',alignItems:'center',paddingHorizontal:10,marginVertical:10}}>
        <Back_Button onClick={()=> {setModal(true)}} title="Follow" style={{paddingVertical:8,width:'45%',alignSelf:'center',borderRadius:50}} />
-       <BlueOutline_Button onClick={()=> {setModal(true)}} title="Message" style={{paddingVertical:8,marginTop:0,width:'45%',alignSelf:'center',borderRadius:50}} />
+       <BlueOutline_Button onClick={sendMessage} title="Message" style={{paddingVertical:8,marginTop:0,width:'45%',alignSelf:'center',borderRadius:50}} />
    </View>
 
 </View> );

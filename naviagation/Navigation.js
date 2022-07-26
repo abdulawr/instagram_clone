@@ -12,7 +12,7 @@ import NewPost from "../screen/bottomNavigation/NewPost";
 import SavePost from "../screen/SavePost";
 import UserProfile from "../screen/UserProfile";
 import UserList from "../screen/UserList";
-
+import MessageView from "../screen/MessageView";
 
 
 const Navigation = (props) => {
@@ -44,6 +44,7 @@ const Navigation = (props) => {
             <Stack.Screen options={{headerShown:true,title:"Discover people",headerTitleStyle: { fontFamily:'SAN_BOLD' },
              headerShadowVisible: false,}} name="UserList" component={UserList} />
             <Stack.Screen options={{headerShown:false}} name="Startup" component={Startup} />
+            <Stack.Screen options={{headerShadowVisible:false}} name="MessageView" component={MessageView} />
             <Stack.Screen options={{headerShown:false}} name="UserProfile" component={UserProfile} />
             <Stack.Screen options={{headerShown:false}} name="Landing" component={Landing} />
             <Stack.Screen options={{headerShown:false}} name="DefaultPage" component={index} />

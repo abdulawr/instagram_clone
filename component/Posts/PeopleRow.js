@@ -2,7 +2,8 @@ import {
     View,
     Image,
     StyleSheet,
-   Text
+   Text,
+   Pressable
 } from 'react-native';
 import Colors from '../../constant/Colors';
 import Back_Button from '../../component/button/Back_Button';
@@ -14,7 +15,9 @@ const PeopleRow = (props) => {
    
     return ( 
         <View style={styles.container}>
+             <Pressable onPress={props.onProfilePress}>
              <Image style={styles.imageContainer} source={(item.image == 'null') ? require('../../assets/images/no_image.jpg') : {uri:item.image}} />
+             </Pressable>
              <Text style={{fontFamily:'SAN_MED'}}>{item.name}</Text>
              <Text style={{fontFamily:'SAN_REG',fontSize:11,color:'#707070'}}>Suggested for you</Text>
              {
