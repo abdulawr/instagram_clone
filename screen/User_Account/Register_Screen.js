@@ -99,6 +99,7 @@ const Register_Screen = (props) => {
                 });
                
             } catch (e) {
+              console.log("Error => ",e)
               setLoading(false);
               Set_error_msg({...error_msg,status:true,message:'Something went wrong try again'});
             }

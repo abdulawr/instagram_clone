@@ -25,8 +25,7 @@ import { autoLogout } from "../../config/Functions";
 import { fireStore } from "../../config/firebase";
 import { doc, getDoc } from "firebase/firestore";
 import User_thk from "../../redux/Action_Thunk/User_thk";
-import { useDispatch,useSelector } from "react-redux";
-import { addUser } from "../../redux/Slices/User";
+import { useDispatch } from "react-redux";
 
 
 const Login_Screen = (props) => {
